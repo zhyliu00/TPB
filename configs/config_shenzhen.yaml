@@ -1,0 +1,73 @@
+data:
+  data_keys: ['metr-la', 'pems-bay', 'shenzhen', 'chengdu_m']
+  metr-la:
+    dataset_path: data/metr-la/dataset_expand.npy
+    adjacency_matrix_path: data/metr-la/matrix.npy
+    time_step: 34272
+    node_num: 207
+    speed_mean: 58.465786
+    speed_std: 12.905341
+  
+  pems-bay:
+    dataset_path: data/pems-bay/dataset_expand.npy
+    adjacency_matrix_path: data/pems-bay/matrix.npy
+    time_step: 52116
+    node_num: 325
+    speed_mean: 62.621582859
+    speed_std: 9.58811369696
+
+  chengdu_m:
+    dataset_path: data/chengdu_m/dataset_expand.npy
+    adjacency_matrix_path: data/chengdu_m/matrix.npy
+    time_step: 17280
+    node_num: 524
+    speed_mean: 29.0982979559
+    speed_std: 9.75304346669
+  
+  shenzhen:
+    dataset_path: data/shenzhen/dataset_expand.npy
+    adjacency_matrix_path: data/shenzhen/matrix.npy
+    time_step: 17280
+    node_num: 627
+    speed_mean: 30.5735608506
+    speed_std: 11.0922606598
+  
+task:
+  mae:
+    patch_num: 12 
+    his_num: 288
+    pred_num: 0
+    batch_size: 4  # [B, N, 288, 2]
+    train_epochs: 1000
+    lr : 0.0001
+    add_target : True
+  maml:
+    his_num: 288
+    pred_num: 12
+    batch_size: 16
+    task_num: 2
+    add_target : True
+    train_epochs : 5
+    finetune_epochs : 400
+    test_dataset : 'shenzhen'
+
+
+model:
+  mae: 
+    spectral: False
+    patch_size: 12
+    in_channel: 1 
+    out_channel: 128
+    dropout: 0.1
+    window_size: 288
+    mask_size: 24
+    mask_ratio: 0.75
+    L: 4
+    
+
+  STnet:
+    update_step : 2
+    K: 10
+    update_lr : 0.0005
+    meta_lr : 0.001
+    data_list : 'chengdu_metr_pems'
